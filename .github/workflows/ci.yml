@@ -1,4 +1,4 @@
-name: API Translation 
+name: Free Translate API
 
 on:
   push:
@@ -24,15 +24,14 @@ jobs:
 
       - name: Install golangci-lint
         run: |
-          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.55.2
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b /usr/local/bin v1.55.2
 
       - name: Run golangci-lint
-        run: $(go env GOPATH)/bin/golangci-lint run .
-  
+        run: /usr/local/bin/golangci-lint run ./...
+
   test: 
     name: Run Test
     runs-on: ubuntu-latest
-    
     steps: 
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -50,8 +49,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
 
+      - name: Download Go Modules
+        run: go mod download
+
       - name: Verify Go Modules
         run: go mod tidy && go mod verify
 
       - name: Run Tests Go
-        run: go test -v .
+        run: go test -v ./...
