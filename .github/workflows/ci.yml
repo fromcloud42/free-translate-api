@@ -78,5 +78,5 @@ jobs:
         with:
             context: .
             push: true
-            tags: extensionfunction/free-translate-api:tagname
+            tags: extensionfunction/free-translate-api:latest
         
